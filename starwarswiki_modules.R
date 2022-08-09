@@ -14,6 +14,7 @@ starwars_UI = function(id) {
                tableOutput(NS(id,"films_data")),
                tableOutput(NS(id,"vehicles_data")),
                tableOutput(NS(id,"starships_data"))
+               
              )
              
     ),
@@ -23,11 +24,13 @@ starwars_UI = function(id) {
                selectInput(NS(id,"species_name"), "Select Species", choices = starwars$species),
                selectInput(NS(id,"category_name"),"Select A  Variable to Look Up ", choices = c("height","mass","hair_color","skin_color",
                                                                                                 "eye_color","birth_year","sex","gender",
-                                                                                                "homeworld"))
+                                                                                                "homeworld")),
+               textOutput(NS(id,"text"))
              ),
              mainPanel(
                plotOutput(NS(id,"bar_plot")),
                plotOutput(NS(id,"scatter_plot"))
+               
              ))
   )
 }
@@ -63,7 +66,9 @@ species_wikiServer = function(id) {
       starwars  %>% 
         ggplot(aes(x = starwars[[input$category_name]] ,y = name)) +
         geom_point(color = "red") +
-        labs(x = input$category_name)
+        labs(x = input$category_name) +
+        ggtitle(input$species_name)
     })
+    output$text = renderText(input$character_name)
   })
 }
